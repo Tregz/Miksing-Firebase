@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="HandheldFriendly" content="True">
+<!--<meta name="MobileOptimized" content="320">-->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Miksing</title>
+<meta name="description" content="Mixing mobile app for iOS and Android">
+<meta name="keywords" content="miksing, mixing app, ios app, android app" />
+<meta name="author" content="Jerome Robbins" />
+<meta name="google-site-verification" content="r-cEmbTfhA96_o4IjDz3gfeZM1BviKhfIcg9RybP32A" />
+<meta property="fb:admins" content="740432666" />
+<meta property="og:title" content="Miksing" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://www.miksing.com/" />
+<meta property="og:description" content="Mixing mobile app for iOS and Android" />
+<meta property="og:image" content="draw/sm_logo.jpg" />
+<meta property="og:image:secure_url" content="draw/sm_logo.jpg" />
+<meta property="og:image:width" content="960" />
+<meta property="og:image:height" content="960" /><!---->
+</head>
+<body>
+<nav><ul class="sideline">
+	<a href="#"><img src="draw/ic_logo.svg" id="logo" alt="Miksing Logo">
+	<li id="here" class="left"><span id="name">Miksing</span></li></a>
+	<li class="side" onclick="this.childNodes[0].checked=!this.childNodes[0].checked"
+		onmouseenter="var input=this.childNodes[0]; setTimeout(function(){
+					  if(input.checked!==true){input.checked=true;};},1);"
+		onmouseleave="this.childNodes[0].checked=false"><input type="checkbox" id="lang">
+		<img src="draw/ic_language.svg" alt="Language Icon" class="icon">
+		<div class="more"><a href="index-fr.html"><span>Français</span></a></div></li>
+	<!--<a href="http://github.com/Tregz/Miksing"><li class="menu"><span>iOS</span></li></a>-->		
+	<li class="menu" onclick="this.childNodes[0].checked=!this.childNodes[0].checked"
+		onmouseenter="var input=this.childNodes[0]; setTimeout(function(){
+					  if(input.checked!==true){input.checked=true;};},1);"
+		onmouseleave="this.childNodes[0].checked=false"><input type="checkbox" id="android">
+		<img src="draw/ic_android.svg" alt="Android Icon" class="nav-icon"><span>Android</span>
+		<div class="more"><a href="https://play.google.com/store/apps/details?id=com.tregz.miksing">
+			<span>App 1.07</span></a><!--
+		<a href="https://play.google.com/apps/testing/com.tregz.miksing">
+			<span>Beta 1.07</span></a>--></div></li>
+</ul></nav>
+<input id="tab1" type="radio" name="tabs">
+<input id="tab2" type="radio" name="tabs">
+<input id="tab3" type="radio" name="tabs" checked>
+<input type="checkbox" class="expand" id="line-up">
+<div id="background">
+<header class="sideline">
+	<div id="tv">
+	<div id="player_0"></div>
+	<div id="player_1"></div>
+	<div id="player_2"></div>
+	<video controls loop>Your browser does not support HTML5 video.</video>
+	<div class="centered" id="intro">
+		<h2>Web demo of the app</h2>
+		<h1>Loading...</h1>
+	</div></div>
+	<div id="prepare" class="sideline">
+	<p><img src="draw/ic_queue.svg" class="icon" alt="Queue Icon"> Add medias from list to play them in a continuous mix</p></div>
+	<ul><label for="tab1" class="content1"><li class="menu" id="page1">
+		<img src="draw/ic_group.svg" alt="Users Icon"><span>Users</span></li></label>
+	<label for="tab2" class="content2"><li class="menu" id="page2">
+		<img src="draw/ic_folder.svg" alt="Folders Icon"><span>Playlists</span></li></label>
+	<label for="tab3" class="content3"><li class="menu" id="page3">
+		<img src="draw/ic_music_video.svg" alt="Medias Icon"><span>Medias</span></li></label>
+	<label for="line-up"><li class="side" id="queud">
+	Prepare <img src="draw/ic_expand.svg" alt="Expandable Icon" class="icon">
+	</li></label></ul>
+</header>
+<div id="controller" class="sideline">
+	<section id="section1">
+		<div id="list1"><header id="header1" class="controls">
+			<div class="left"><input type="checkbox" id="sign">
+			<label for="sign"><img src="draw/ic_key.svg" class="icon" alt="Login Icon">Log In</label>
+			<div class="down">
+				<input id="courriel" type="text" placeholder="Email"/>
+    			<input id="password" type="password" placeholder="Password"/>
+    			<button id="signIn" name="signIn" class="button">Continue</button>
+    			<button id="signUp" name="signUp" class="button">Sign Up</button>
+    			<button id="cancel" name="cancel" class="button">Cancel</button>
+			</div></div><div class="main"></div>
+			<div class="right"><span id="dropdown1"></span></div></header>
+		<div class="items" id="items1"></div></div></section>
+	<section id="section2">
+		<input type="checkbox" class="expand" id="new-playlist">
+		<div id="add-playlist"></div>
+		<div id="list2"><header id="header2" class="controls">
+			<div id="insert-playlist" class="left"></div>
+			<div class="main"></div>
+			<div class="right"><span id="dropdown2"></span></div></header>
+		<div class="items" id="items2"></div></div>
+	</section>
+	<section id="section3">
+		<input type="checkbox" class="expand" id="new-media">
+		<div id="media-scan">
+			<div class="details"><label>Video</label>
+			<input id="media-link" type="text" name="link" placeholder="YouTube Link">
+			<button id="grab" name="grab" class="button" onClick="item('media');">Scan</button>
+		</div></div>
+		<input type="checkbox" class="expand" id="media-details">
+		<div id="media-found"><label class="infos" id="media-chan">Channel</label><br></div>
+		<div id="list3"><header id="header3" class="controls">
+			<div id="insert-media" class="left"></div>
+			<div class="main"></div>
+			<div class="right"><span id="dropdown3"></span></div></header>
+		<div class="items" id="items3"></div></div>
+	</section>
+	<input type="checkbox" class="expand" id="info"><div class="about">
+		<article><img src="draw/sm_logo.jpg" alt="Miksing Logo" class="small">
+			<div><p>This is the web version of a mobile cross-platform app for multimedia mixing. The application is a student project developed for computing studies at <a href="http://uqtr.ca/">Université du Québec à Trois-Rivières</a>. The repository is public on GitHub in <a href="http://github.com/Tregz/Miksing">swift</a> (with CoreData) for iOS and <a href="http://github.com/Tregz/Miksing-Android">java</a> (with SQL) for Android. Both mobile devices can synchronize data through Google's Firebase.</p></div>
+		<input type="checkbox" id="contact" class="expand">
+		<aside class="expand"><label for="contact">
+			<img src="draw/ic_email.svg" alt="Contact Icon" class="icon"></label></aside>
+		<form name="contactform" method="post" action="form/en/contact.php" id="contact_form">
+		<h2>For additionnal infos</h2><table>
+			<tr><td><input type="text" name="name" maxlength="50" placeholder="Name *"></td></tr>
+			<tr><td><input type="text" name="mail" maxlength="80" placeholder="Email *"></td></tr>
+			<tr><td><textarea name="body" maxlength="1000" rows="6" placeholder="Details..."></textarea></td></tr>
+			<tr><td><input type="submit" value="Send"></td></tr>
+		</table></form></article>
+	<article><h4>Updates 2018</h4>
+		<p>02-20. Firebase database, shared with Android app [beta].</p>
+		<p>02-15. YouTube video continuous automix for playlists.</p>
+		<h4>Updates 2017</h4>
+		<p>09-06. Firebase authentication for existing and new users.</p>
+		<p>08-29. YouTube video transition, fading audio and switching visual halfway.</p></article></div>
+	<input type="checkbox" id="more"><div
+		onclick="var input=document.getElementById('more');input.checked=!input.checked"
+		onmouseenter="var input=document.getElementById('more');
+			setTimeout(function(){if(input.checked!==true){input.checked=true;};},1);"
+		onmouseleave="document.getElementById('more').checked=false">
+		<div id="small-dots"><img src="draw/ic_more_horiz.svg" alt="More Icon" class="icon"></div>
+		<div class="more"><label for="info"><li class="down"><span>About</span></li></label>
+			<li class="down"><a href="help/en/privacy.pdf"><span>Privacy</span></a></li></div></div>
+	</div></div>
+<footer>&copy; 2017 <a href="http://www.tregz.com">Tregz</a></footer>
+<link rel="stylesheet" href="base/layout.css?v=1.49">
+<link rel="stylesheet" href="base/login.css?v=1.02">
+<link rel="stylesheet" href="base/cards.css?v=1.16">
+<!--<script src="code/maps.js?v=1.06"></script>
+<script src="code/firebase.js?v=1.44"></script> 
+<script src="code/youtube.js?v=1.08"></script> --><!--
+<link rel="stylesheet" href="body/layout.css">
+<script src="code/maps.js"></script>
+<link rel="stylesheet" href="body/login.css">
+<link rel="stylesheet" href="body/cards.css">-->
+<script src="core/common.js"></script>
+<script src="core/firebase.js?v=1.48"></script>
+<script src="core/youtube.js?v=1.16"></script>
+</body>
+</html>
