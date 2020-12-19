@@ -1,39 +1,14 @@
 /** JavaScript Document for Google's Firebase's cloud authentication and database sync
  * Created by Jerome Robbins on 18-02-12. */
-const config = {
-    apiKey: "AIzaSyB2ZpoJQJMsY6p-OhYrP74AV8xLIyC3aKI",
-    authDomain: "miksing.firebaseapp.com",
-    databaseURL: "https://miksing.firebaseio.com",
-    projectId: "miksing",
-    storageBucket: "miksing.appspot.com",
-    messagingSenderId: "748399202359",
-    appId: "1:748399202359:web:2a4bb006a3781d77556fb2"
-};
-const firebaseJS = 'https://www.gstatic.com/firebasejs/7.9.0/firebase-';
-const firebaseAuth = firebaseJS + 'auth.js';
-const firebaseCore = firebaseJS + 'app.js';
-const firebaseData = firebaseJS + 'database.js';
-const firebaseFile = firebaseJS + 'storage.js';
-let authReady = false, dataReady = false, fileReady = false;
 let songRef, tubeRef, userRef;
 let userId = "Zdh2ZOt9AOMKih2cNv00XSwk3fh1";
-let firebaseScript = document.createElement('script');
-firebaseScript.src = firebaseCore;
-firebaseScript.onload = firebaseScript.onreadystatechange = function () {
-    if (!this.readyState || this.readyState === 'complete') {
-        load(firebaseAuth); // Initialize Firebase's authentication
-        load(firebaseData); // Initialize Firebase's database
-        load(firebaseFile); // Initialize Firebase's storage
-    }
-};
-node(firebaseScript);
 
 /** UI for the user's profile: bt=Buttons; tx=Text inputs. */
 let btCancel = document.getElementById('cancel');
 let btSign = document.getElementById("sign");
 let btSignIn = document.getElementById('signIn');
 let btSignUp = document.getElementById('signUp');
-let txCourriel = document.getElementById("courriel");
+let txEmail = document.getElementById("courriel");
 let txPassword = document.getElementById("password");
 let items1 = document.getElementById('items1');
 let items2 = document.getElementById('items2');
@@ -89,10 +64,10 @@ function card(entity, path) {
             thumbnail.src = "https://img.youtube.com/vi/" + entity[key.ID] + "/0.jpg";
             break;
         case table.TUBE:
-            thumbnail.src = "draw/ic_playlist.svg";
+            thumbnail.src = "assets/ic_playlist.svg";
             break;
         case table.USER:
-            thumbnail.src = "draw/" + entity[key.IS] + ".svg";
+            thumbnail.src = "assets/" + entity[key.IS] + ".svg";
             console.log(path);
             break;
     }
@@ -152,12 +127,12 @@ function card(entity, path) {
     menu.setAttribute("class", "options");
     const embed = document.createElement("embed");
     embed.alt = "Play next icon";
-    embed.src = "draw/ic_queue.svg";
+    embed.src = "assets/ic_queue.svg";
     switch (path) {
         case table.SONG:
             const play = document.createElement("embed");
             play.alt = "Play icon";
-            play.src = "draw/ic_play.svg";
+            play.src = "assets/ic_play.svg";
             play.type = "image/svg+xml";
             play.onload = function() {
                 over(play).onclick = function() {
@@ -165,7 +140,7 @@ function card(entity, path) {
                 };
             };
 
-            // TODO if (!admin && !pro) { pen.style.height = "0"; }
+            // TODO if (!admin && !pro) { pen.themes.height = "0"; }
             // TODO if (wired) { bill(inserting, insert, data[_KEY], tab); }
 
             embed.onload = function() {
@@ -243,86 +218,69 @@ function head() {
 }
 
 /** Firebase initialization and user authentication */
-function load(src) {
-    let firebaseScript = document.createElement('script');
-    firebaseScript.src = src;
-    firebaseScript.onload = firebaseScript.onreadystatechange = function () {
-        if (!this.readyState || this.readyState === 'complete') {
-            switch (src) {
-                case firebaseAuth:
-                    authReady = true;
-                    break;
-                case firebaseData:
-                    dataReady = true;
-                    break;
-                case firebaseFile:
-                    fileReady = true;
-                    break;
+function init() {
+    songRef = firebase.database().ref('song');
+    tubeRef = firebase.database().ref('tube');
+    userRef = firebase.database().ref('user');
+
+    /** Animated logo */
+    const storageRef = firebase.storage().ref(); // jshint ignore:line
+    const file = "Miksing_Logo-Animated";
+    const video = document.getElementsByTagName('video')[0];
+    const source1 = document.createElement("source");
+    source1.type = "video/mp4";
+    const source2 = document.createElement("source");
+    source2.type = "video/webm";
+    storageRef.child("anim/" + file + ".mp4").getDownloadURL().then(function (url) {
+        source1.src = url;
+    }).then(function () {
+        storageRef.child("anim/" + file + ".webm").getDownloadURL().then(function (url) {
+            source2.src = url;
+            video.appendChild(source1);
+            video.appendChild(source2);
+            video.load();
+            video.muted = true;
+            video.play();
+        });
+    });
+    video.style.height = "auto";
+    video.style.opacity = "1";
+
+    /** Authentication */
+    btSignIn.addEventListener('click', function () {
+        if (firebase.auth().currentUser) firebase.auth().signOut();
+        else {
+            const email = txEmail.value;
+            const password = txPassword.value;
+            if (good(email, password)) {
+                firebase.auth().signInWithEmailAndPassword(email, password)
+                    .catch(function (error) {
+                        fail(error);
+                    });
             }
         }
-        if (authReady && dataReady && fileReady) {
-            firebase.initializeApp(config);
-            songRef = firebase.database().ref('song');
-            tubeRef = firebase.database().ref('tube');
-            userRef = firebase.database().ref('user');
-
-            /** Animated logo */
-            const storageRef = firebase.storage().ref(); // jshint ignore:line
-            const file = "Miksing_Logo-Animated";
-            const video = document.getElementsByTagName('video')[0];
-            const source1 = document.createElement("source");
-            source1.type = "video/mp4";
-            const source2 = document.createElement("source");
-            source2.type = "video/webm";
-            /* storageRef.child("anim").child(file + ".mp4").getDownloadURL().then(function (url) {
-                source1.src = url;
-            }).then(function () {
-                storageRef.child("anim").child(file + ".webm").getDownloadURL().then(function (url) {
-                    source2.src = url;
-                    video.appendChild(source1);
-                    video.appendChild(source2);
-                    video.load();
-                    video.muted = true;
-                    video.play();
+    });
+    btSignUp.addEventListener('click', function () {
+        const email = txEmail.value;
+        const password = txPassword.value;
+        if (good(email, password)) {
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .catch(function (error) {
+                    fail(error);
                 });
-            }); */
-            video.style.height = "auto";
-            video.style.opacity = "1";
-
-            /** Authentication */
-            btSignIn.addEventListener('click', function () {
-                if (firebase.auth().currentUser) firebase.auth().signOut();
-                else {
-                    const email = txCourriel.value;
-                    const password = txPassword.value;
-                    if (good(email, password)) {
-                        firebase.auth().signInWithEmailAndPassword(email, password)
-                            .catch(function (error) {
-                                fail(error);
-                            });
-                    }
-                }
-            });
-            btSignUp.addEventListener('click', function () {
-                const email = txCourriel.value;
-                const password = txPassword.value;
-                if (good(email, password)) {
-                    firebase.auth().createUserWithEmailAndPassword(email, password)
-                        .catch(function (error) {
-                            fail(error);
-                        });
-                }
-            });
-            btCancel.addEventListener('click', function () {
-                btSign.checked = false;
-            });
-            // TODO: on authentication
-
-            items3.innerHTML = "";
-            user(userId);
         }
-    };
-    node(firebaseScript);
+    });
+    btCancel.addEventListener('click', function () {
+        btSign.checked = false;
+    });
+    items3.innerHTML = "";
+    user(userId);
+
+    /* Google Analytics */
+    firebase.analytics();
+
+    /* Google Performance */
+    firebase.performance()
 }
 
 function next() {
@@ -346,8 +304,8 @@ function over(embed, exit) {
         leave = "#00c";
     }
     const svg = embed.getSVGDocument().getElementsByTagName("svg")[0];
-    svg.setAttribute("onmouseenter", "evt.target.style.fill='" + enter + "';");
-    svg.setAttribute("onmouseleave", "evt.target.style.fill='" + leave + "';");
+    svg.setAttribute("onmouseenter", "evt.target.themes.fill='" + enter + "';");
+    svg.setAttribute("onmouseleave", "evt.target.themes.fill='" + leave + "';");
     return svg;
 }
 
@@ -373,8 +331,10 @@ function tube(id) {
         entity[key.NS] = snapshot.val().name;
         console.log("Name: " + entity[key.NS]);
         items2.appendChild(card(entity, table.TUBE));
+
         snapshot.child('song').forEach(function (snapshot) {
-            song(snapshot.key)
+            song(snapshot.key);
+
         });
     });
 }
@@ -383,9 +343,12 @@ function user(id) {
     userRef.child(id).once('value').then(function (snapshot) {
         const entity = [];
         console.log("User: " + entity[key.NS]);
+
         entity[key.ID] = snapshot.key;
+
         entity[key.IS] = snapshot.child('data').val().icon;
         entity[key.NS] = snapshot.child('data').val().name;
+
         items1.appendChild(card(entity, table.USER));
         tube('-M0A1B6LQlpJpgdbkYyx');
 
