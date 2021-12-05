@@ -18,19 +18,13 @@
   <meta property="og:image:secure_url" content="https://www.tregz.com/miksing/draw/sm_logo.jpg" />
   <meta property="og:image:width" content="960" />
   <meta property="og:image:height" content="960" />
-
-  <!-- update the version number as needed -->
-  <script defer src="/__/firebase/8.2.0/firebase-app.js"></script>
-  <script defer src="/__/firebase/8.2.0/firebase-auth.js"></script>
-  <script defer src="/__/firebase/8.2.0/firebase-database.js"></script>
-  <script defer src="/__/firebase/8.2.0/firebase-storage.js"></script>
-  <script defer src="/__/firebase/8.2.0/firebase-analytics.js"></script>
-  <script defer src="/__/firebase/8.2.0/firebase-performance.js"></script>
-  <!--
-    Initialize the SDK after all desired features are loaded.
-    Set useEmulator to false to avoid connecting the SDK to running emulators.
-  -->
-  <script defer src="/__/firebase/init.js?useEmulator=false"></script>
+  <script defer src="/__/firebase/9.6.0/firebase-app-compat.js"></script>
+  <script defer src="/__/firebase/9.6.0/firebase-auth-compat.js"></script>
+  <script defer src="/__/firebase/9.6.0/firebase-database-compat.js"></script>
+  <script defer src="/__/firebase/9.6.0/firebase-storage-compat.js"></script>
+  <script defer src="/__/firebase/9.6.0/firebase-analytics-compat.js"></script>
+  <script defer src="/__/firebase/9.6.0/firebase-performance-compat.js"></script>
+  <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 </head>
 <body>
 <nav>
@@ -158,27 +152,19 @@
 <link rel="stylesheet" href="themes/layout.css?v=1.50">
 <link rel="stylesheet" href="themes/login.css?v=1.02">
 <script src="scripts/common.js"></script>
-<script src="scripts/firebase.js?v=1.50"></script>
+<script src="scripts/firebase.js?v=1.52"></script>
 <script src="scripts/youtube.js?v=1.16"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const listener = document.querySelector('#load');
-
-    try {
-      let app = firebase.app();
-      let features = [
-        'auth',
-        'database',
-        'storage',
-        'analytics',
-        'performance'
-      ].filter(feature => typeof app[feature] === 'function');
-      listener.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-      init();
-    } catch (e) {
-      console.error(e);
-      listener.textContent = 'Error loading the Firebase SDK, check the console.';
-    }
+    firebase.auth().signInAnonymously()
+            .then(() => {
+              init();
+            })
+            .catch((error) => {
+              // var errorCode = error.code;
+              // var errorMessage = error.message;
+              // ...
+            });
   });
 </script>
 </body>

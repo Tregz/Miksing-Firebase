@@ -1,5 +1,6 @@
 /** JavaScript Document for Google's Firebase's cloud authentication and database sync
  * Created by Jerome Robbins on 18-02-12. */
+
 let songRef, tubeRef, userRef;
 let userId = "Zdh2ZOt9AOMKih2cNv00XSwk3fh1";
 
@@ -38,6 +39,7 @@ const table = {
     TUBE: 'tube',
     USER: 'user'
 };
+
 
 function card(entity, path) {
     const article = document.createElement("article");
@@ -222,7 +224,6 @@ function init() {
     songRef = firebase.database().ref('song');
     tubeRef = firebase.database().ref('tube');
     userRef = firebase.database().ref('user');
-
     /** Animated logo */
     const storageRef = firebase.storage().ref(); // jshint ignore:line
     const file = "Miksing_Logo-Animated";
@@ -245,7 +246,6 @@ function init() {
     });
     video.style.height = "auto";
     video.style.opacity = "1";
-
     /** Authentication */
     btSignIn.addEventListener('click', function () {
         if (firebase.auth().currentUser) firebase.auth().signOut();
@@ -351,7 +351,6 @@ function user(id) {
 
         items1.appendChild(card(entity, table.USER));
         tube('-M0A1B6LQlpJpgdbkYyx');
-
         /* snapshot.child('tube').forEach(function (snapshot) {
             tube(snapshot.key)
         }) */
